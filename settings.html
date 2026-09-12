@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings - SHIZAZ AI</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    color:#172033;
+}
+
+/* SIDEBAR */
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:250px;
+    height:100vh;
+    background:#111827;
+    color:white;
+    padding:25px 18px;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:bold;
+    margin-bottom:35px;
+}
+
+.logo span{
+    color:#3b82f6;
+}
+
+.menu-title{
+    font-size:11px;
+    color:#7f8ba3;
+    margin:20px 12px 10px;
+    text-transform:uppercase;
+}
+
+.sidebar a{
+    display:block;
+    color:#aeb8c8;
+    text-decoration:none;
+    padding:13px 14px;
+    border-radius:8px;
+    margin-bottom:5px;
+    font-size:14px;
+}
+
+.sidebar a:hover,
+.sidebar a.active{
+    background:#1d4ed8;
+    color:white;
+}
+
+/* MAIN */
+.main{
+    margin-left:250px;
+    padding:30px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.topbar h1{
+    font-size:28px;
+}
+
+.topbar p{
+    color:#718096;
+    margin-top:6px;
+}
+
+.user{
+    background:white;
+    padding:10px 15px;
+    border-radius:10px;
+    box-shadow:0 2px 10px rgba(0,0,0,.05);
+}
+
+/* SETTINGS */
+.settings-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+}
+
+.card{
+    background:white;
+    border-radius:14px;
+    padding:25px;
+    box-shadow:0 3px 15px rgba(0,0,0,.05);
+}
+
+.card h2{
+    font-size:18px;
+    margin-bottom:6px;
+}
+
+.card-description{
+    color:#718096;
+    font-size:13px;
+    margin-bottom:22px;
+}
+
+.form-group{
+    margin-bottom:18px;
+}
+
+.form-group label{
+    display:block;
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:7px;
+}
+
+input, select{
+    width:100%;
+    padding:12px;
+    border:1px solid #dbe2ea;
+    border-radius:8px;
+    outline:none;
+    font-size:14px;
+}
+
+input:focus,
+select:focus{
+    border-color:#3b82f6;
+}
+
+/* TOGGLE */
+.setting-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:15px 0;
+    border-bottom:1px solid #edf0f4;
+}
+
+.setting-row:last-child{
+    border-bottom:none;
+}
+
+.setting-info h3{
+    font-size:14px;
+    margin-bottom:4px;
+}
+
+.setting-info p{
+    font-size:12px;
+    color:#718096;
+}
+
+.switch{
+    position:relative;
+    width:46px;
+    height:24px;
+}
+
+.switch input{
+    display:none;
+}
+
+.slider{
+    position:absolute;
+    inset:0;
+    background:#cbd5e1;
+    border-radius:30px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.slider:before{
+    content:"";
+    position:absolute;
+    width:18px;
+    height:18px;
+    left:3px;
+    top:3px;
+    background:white;
+    border-radius:50%;
+    transition:.3s;
+}
+
+.switch input:checked + .slider{
+    background:#2563eb;
+}
+
+.switch input:checked + .slider:before{
+    transform:translateX(22px);
+}
+
+/* BUTTON */
+.save-btn{
+    margin-top:20px;
+    background:#2563eb;
+    color:white;
+    border:none;
+    padding:13px 22px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.save-btn:hover{
+    background:#1d4ed8;
+}
+
+/* PLAN */
+.plan{
+    border:1px solid #dbeafe;
+    background:#eff6ff;
+    padding:18px;
+    border-radius:10px;
+}
+
+.plan-title{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.plan-title h3{
+    font-size:17px;
+}
+
+.badge{
+    background:#2563eb;
+    color:white;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:11px;
+}
+
+.plan-price{
+    font-size:28px;
+    font-weight:bold;
+    margin:12px 0;
+}
+
+.plan-price span{
+    font-size:13px;
+    color:#64748b;
+    font-weight:normal;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+    .sidebar{
+        width:210px;
+    }
+
+    .main{
+        margin-left:210px;
+    }
+
+    .settings-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:650px){
+    .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+    }
+
+    .main{
+        margin-left:0;
+        padding:20px;
+    }
+
+    .topbar{
+        align-items:flex-start;
+        gap:15px;
+        flex-direction:column;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+
+    <div class="logo">
+        SHIZAZ <span>AI</span>
+    </div>
+
+    <div class="menu-title">Main</div>
+
+    <a href="index.html">Dashboard</a>
+    <a href="ai.html">AI Assistant</a>
+    <a href="leads.html">Leads</a>
+    <a href="followups.html">Follow-ups</a>
+    <a href="appointments.html">Appointments</a>
+    <a href="analytics.html">Analytics</a>
+
+    <div class="menu-title">System</div>
+
+    <a href="settings.html" class="active">Settings</a>
+
+</div>
+
+
+<!-- MAIN -->
+<div class="main">
+
+    <div class="topbar">
+
+        <div>
+            <h1>Settings</h1>
+            <p>Manage your SHIZAZ AI insurance automation platform.</p>
+        </div>
+
+        <div class="user">
+            👤 Admin
+        </div>
+
+    </div>
+
+
+    <div class="settings-grid">
+
+        <!-- COMPANY -->
+        <div class="card">
+
+            <h2>Company Information</h2>
+
+            <p class="card-description">
+                Update your insurance company information.
+            </p>
+
+            <div class="form-group">
+                <label>Company Name</label>
+                <input type="text" value="ABC Insurance Agency">
+            </div>
+
+            <div class="form-group">
+                <label>Business Email</label>
+                <input type="email" value="admin@abinsurance.com">
+            </div>
+
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="text" value="+1 (555) 123-4567">
+            </div>
+
+            <div class="form-group">
+                <label>Industry</label>
+                <select>
+                    <option>Insurance Agency</option>
+                    <option>Insurance Broker</option>
+                    <option>Life Insurance</option>
+                    <option>Health Insurance</option>
+                    <option>Auto Insurance</option>
+                </select>
+            </div>
+
+            <button class="save-btn" onclick="saveSettings()">
+                Save Changes
+            </button>
+
+        </div>
+
+
+        <!-- AI AUTOMATION -->
+        <div class="card">
+
+            <h2>AI Automation</h2>
+
+            <p class="card-description">
+                Control your AI-powered insurance workflows.
+            </p>
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+                    <h3>AI Lead Qualification</h3>
+                    <p>Automatically qualify new leads.</p>
+                </div>
+
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+                    <h3>Automatic Follow-ups</h3>
+                    <p>Send follow-up messages automatically.</p>
+                </div>
+
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+                    <h3>Appointment Booking</h3>
+                    <p>Allow AI to schedule appointments.</p>
+                </div>
+
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+                    <h3>AI Lead Scoring</h3>
+                    <p>Automatically score lead intent.</p>
+                </div>
+
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <!-- NOTIFICATIONS -->
+        <div class="card">
+
+            <h2>Notifications</h2>
+
+            <p class="card-description">
+                Choose which notifications your team receives.
+            </p>
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+                    <h3>New Lead Alert</h3>
+                    <p>Notify when a new lead arrives.</p>
+                </div>
+
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+                    <h3>Appointment Alert</h3>
+                    <p>Notify when an appointment is booked.</p>
+                </div>
+
+                <label class="switch">
+                    <input type="checkbox" checked>
+                    <span class="slider"></span>
+                </label>
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+                    <h3>Follow-up Response</h3>
+                    <p>Notify when a lead responds.</p>
+                </div>
+
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider"></span>
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <!-- PLAN -->
+        <div class="card">
+
+            <h2>Subscription Plan</h2>
+
+            <p class="card-description">
+                Current platform subscription.
+            </p>
+
+            <div class="plan">
+
+                <div class="plan-title">
+
+                    <h3>Professional</h3>
+
+                    <span class="badge">
+                        ACTIVE
+                    </span>
+
+                </div>
+
+                <div class="plan-price">
+                    $25,000
+                    <span>/ month</span>
+                </div>
+
+                <p style="font-size:13px;color:#64748b;">
+                    AI automation, lead management,
+                    follow-ups, analytics and appointment booking.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function saveSettings(){
+
+    alert("Settings saved successfully!");
+
+}
+
+</script>
+
+</body>
+</html>
