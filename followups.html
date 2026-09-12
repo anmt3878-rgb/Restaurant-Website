@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Follow-ups - SHIZAZ AI</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    color:#172033;
+}
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:245px;
+    height:100vh;
+    background:#111827;
+    color:white;
+    padding:25px 18px;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:40px;
+}
+
+.logo span{
+    color:#38bdf8;
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.nav a{
+    text-decoration:none;
+    color:#aeb8c8;
+    padding:13px 15px;
+    border-radius:10px;
+    display:block;
+}
+
+.nav a:hover,
+.nav a.active{
+    background:#1e293b;
+    color:white;
+}
+
+.main{
+    margin-left:245px;
+    padding:30px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.topbar h1{
+    font-size:28px;
+}
+
+.subtitle{
+    color:#718096;
+    margin-top:6px;
+}
+
+.admin{
+    background:white;
+    padding:10px 16px;
+    border-radius:10px;
+    box-shadow:0 3px 12px rgba(0,0,0,.06);
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:25px;
+}
+
+.stat{
+    background:white;
+    padding:22px;
+    border-radius:15px;
+    box-shadow:0 3px 15px rgba(0,0,0,.06);
+}
+
+.stat p{
+    color:#718096;
+    font-size:14px;
+    margin-bottom:10px;
+}
+
+.stat h2{
+    font-size:28px;
+}
+
+.green{
+    color:#16a34a;
+    font-size:13px;
+    margin-top:8px;
+}
+
+.panel{
+    background:white;
+    border-radius:15px;
+    padding:22px;
+    box-shadow:0 3px 15px rgba(0,0,0,.06);
+    margin-bottom:20px;
+}
+
+.panel h2{
+    font-size:20px;
+    margin-bottom:20px;
+}
+
+.table-wrap{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:750px;
+}
+
+th{
+    text-align:left;
+    padding:14px;
+    background:#f8fafc;
+    color:#64748b;
+    font-size:12px;
+    text-transform:uppercase;
+}
+
+td{
+    padding:16px 14px;
+    border-bottom:1px solid #edf0f4;
+    font-size:14px;
+}
+
+.name{
+    font-weight:bold;
+}
+
+.type{
+    color:#475569;
+}
+
+.badge{
+    display:inline-block;
+    padding:6px 10px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.active-badge{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.pending{
+    background:#fef3c7;
+    color:#b45309;
+}
+
+.completed{
+    background:#e0e7ff;
+    color:#4338ca;
+}
+
+.action{
+    border:none;
+    background:#eff6ff;
+    color:#2563eb;
+    padding:7px 11px;
+    border-radius:7px;
+    cursor:pointer;
+}
+
+.action:hover{
+    background:#dbeafe;
+}
+
+/* WORKFLOW */
+
+.workflow{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    overflow-x:auto;
+    padding:10px 0;
+}
+
+.step{
+    min-width:130px;
+    text-align:center;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:12px;
+    padding:18px 12px;
+}
+
+.step-icon{
+    font-size:25px;
+    margin-bottom:8px;
+}
+
+.step-title{
+    font-size:13px;
+    font-weight:bold;
+}
+
+.arrow{
+    font-size:20px;
+    color:#2563eb;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+    .sidebar{
+        width:70px;
+        padding:20px 10px;
+    }
+
+    .logo{
+        font-size:0;
+        text-align:center;
+    }
+
+    .logo span{
+        font-size:22px;
+    }
+
+    .nav a{
+        font-size:0;
+        text-align:center;
+    }
+
+    .nav a:first-letter{
+        font-size:20px;
+    }
+
+    .main{
+        margin-left:70px;
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+}
+
+@media(max-width:600px){
+
+    .main{
+        padding:18px;
+    }
+
+    .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    .topbar h1{
+        font-size:22px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">
+        SHIZAZ <span>AI</span>
+    </div>
+
+    <div class="nav">
+
+        <a href="index.html">
+            📊 Dashboard
+        </a>
+
+        <a href="ai.html">
+            🤖 AI Assistant
+        </a>
+
+        <a href="leads.html">
+            👥 Leads
+        </a>
+
+        <a href="followups.html" class="active">
+            🔄 Follow-ups
+        </a>
+
+        <a href="appointments.html">
+            📅 Appointments
+        </a>
+
+        <a href="analytics.html">
+            📈 Analytics
+        </a>
+
+        <a href="settings.html">
+            ⚙️ Settings
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- MAIN -->
+
+<div class="main">
+
+    <div class="topbar">
+
+        <div>
+
+            <h1>Automated Follow-ups</h1>
+
+            <p class="subtitle">
+                AI-powered lead follow-up automation
+            </p>
+
+        </div>
+
+        <div class="admin">
+            👤 Admin
+        </div>
+
+    </div>
+
+
+    <!-- STATS -->
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <p>Active Sequences</p>
+
+            <h2>24</h2>
+
+            <div class="green">
+                ↑ 6 this month
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <p>Messages Sent</p>
+
+            <h2>8,492</h2>
+
+            <div class="green">
+                ↑ 19.2% this month
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <p>Response Rate</p>
+
+            <h2>38.6%</h2>
+
+            <div class="green">
+                ↑ 5.4% this month
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <p>Appointments</p>
+
+            <h2>286</h2>
+
+            <div class="green">
+                ↑ 12.5% this month
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- FOLLOW-UP TABLE -->
+
+    <div class="panel">
+
+        <h2>Recent Follow-ups</h2>
+
+        <div class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Lead</th>
+
+                        <th>Insurance</th>
+
+                        <th>Sequence</th>
+
+                        <th>Next Action</th>
+
+                        <th>Status</th>
+
+                        <th>Action</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    <tr>
+
+                        <td class="name">
+                            John Anderson
+                        </td>
+
+                        <td class="type">
+                            Auto
+                        </td>
+
+                        <td>
+                            New Lead Sequence
+                        </td>
+
+                        <td>
+                            Today, 4:00 PM
+                        </td>
+
+                        <td>
+                            <span class="badge active-badge">
+                                Active
+                            </span>
+                        </td>
+
+                        <td>
+                            <button
+                                class="action"
+                                onclick="manageFollowup('John Anderson')">
+                                Manage
+                            </button>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td class="name">
+                            Sarah Johnson
+                        </td>
+
+                        <td class="type">
+                            Home
+                        </td>
+
+                        <td>
+                            Quote Follow-up
+                        </td>
+
+                        <td>
+                            Tomorrow, 10:00 AM
+                        </td>
+
+                        <td>
+                            <span class="badge pending">
+                                Pending
+                            </span>
+                        </td>
+
+                        <td>
+                            <button
+                                class="action"
+                                onclick="manageFollowup('Sarah Johnson')">
+                                Manage
+                            </button>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td class="name">
+                            Michael Brown
+                        </td>
+
+                        <td class="type">
+                            Life
+                        </td>
+
+                        <td>
+                            Lead Nurture
+                        </td>
+
+                        <td>
+                            Completed
+                        </td>
+
+                        <td>
+                            <span class="badge completed">
+                                Completed
+                            </span>
+                        </td>
+
+                        <td>
+                            <button
+                                class="action"
+                                onclick="manageFollowup('Michael Brown')">
+                                View
+                            </button>
+                        </td>
+
+                    </tr>
+
+
+                    <tr>
+
+                        <td class="name">
+                            Emily Davis
+                        </td>
+
+                        <td class="type">
+                            Health
+                        </td>
+
+                        <td>
+                            New Lead Sequence
+                        </td>
+
+                        <td>
+                            Today, 6:30 PM
+                        </td>
+
+                        <td>
+                            <span class="badge active-badge">
+                                Active
+                            </span>
+                        </td>
+
+                        <td>
+                            <button
+                                class="action"
+                                onclick="manageFollowup('Emily Davis')">
+                                Manage
+                            </button>
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <!-- AUTOMATION WORKFLOW -->
+
+    <div class="panel">
+
+        <h2>AI Follow-up Workflow</h2>
+
+        <div class="workflow">
+
+            <div class="step">
+
+                <div class="step-icon">
+                    👤
+                </div>
+
+                <div class="step-title">
+                    New Lead
+                </div>
+
+            </div>
+
+
+            <div class="arrow">
+                →
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-icon">
+                    🤖
+                </div>
+
+                <div class="step-title">
+                    AI Message
+                </div>
+
+            </div>
+
+
+            <div class="arrow">
+                →
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-icon">
+                    ⏱️
+                </div>
+
+                <div class="step-title">
+                    Wait 24h
+                </div>
+
+            </div>
+
+
+            <div class="arrow">
+                →
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-icon">
+                    🔄
+                </div>
+
+                <div class="step-title">
+                    Follow-up
+                </div>
+
+            </div>
+
+
+            <div class="arrow">
+                →
+            </div>
+
+
+            <div class="step">
+
+                <div class="step-icon">
+                    📅
+                </div>
+
+                <div class="step-title">
+                    Book Appointment
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function manageFollowup(name){
+
+    alert(
+        "Follow-up Manager\n\n" +
+        "Lead: " + name +
+        "\n\nAutomation sequence opened."
+    );
+
+}
+
+</script>
+
+</body>
+</html>
