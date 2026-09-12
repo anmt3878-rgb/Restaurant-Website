@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Appointments - SHIZAZ AI</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    color:#172033;
+}
+
+/* SIDEBAR */
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:245px;
+    height:100vh;
+    background:#111827;
+    color:white;
+    padding:25px 18px;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:40px;
+}
+
+.logo span{
+    color:#38bdf8;
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.nav a{
+    text-decoration:none;
+    color:#aeb8c8;
+    padding:13px 15px;
+    border-radius:10px;
+    display:block;
+}
+
+.nav a:hover,
+.nav a.active{
+    background:#1e293b;
+    color:white;
+}
+
+/* MAIN */
+.main{
+    margin-left:245px;
+    padding:30px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+}
+
+.topbar h1{
+    font-size:28px;
+}
+
+.subtitle{
+    color:#718096;
+    margin-top:6px;
+}
+
+.admin{
+    background:white;
+    padding:10px 16px;
+    border-radius:10px;
+    box-shadow:0 3px 12px rgba(0,0,0,.06);
+}
+
+/* STATS */
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:25px;
+}
+
+.stat{
+    background:white;
+    padding:22px;
+    border-radius:15px;
+    box-shadow:0 3px 15px rgba(0,0,0,.06);
+}
+
+.stat p{
+    color:#718096;
+    font-size:14px;
+    margin-bottom:10px;
+}
+
+.stat h2{
+    font-size:28px;
+}
+
+.green{
+    color:#16a34a;
+    font-size:13px;
+    margin-top:8px;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:20px;
+}
+
+/* PANEL */
+.panel{
+    background:white;
+    border-radius:15px;
+    padding:22px;
+    box-shadow:0 3px 15px rgba(0,0,0,.06);
+    margin-bottom:20px;
+}
+
+.panel h2{
+    font-size:20px;
+    margin-bottom:20px;
+}
+
+/* APPOINTMENTS */
+.appointment{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:16px 0;
+    border-bottom:1px solid #edf0f4;
+}
+
+.appointment:last-child{
+    border-bottom:none;
+}
+
+.person{
+    font-weight:bold;
+}
+
+.details{
+    color:#718096;
+    font-size:13px;
+    margin-top:5px;
+}
+
+.time{
+    text-align:right;
+}
+
+.time strong{
+    display:block;
+    font-size:14px;
+}
+
+.badge{
+    display:inline-block;
+    margin-top:5px;
+    padding:5px 9px;
+    border-radius:20px;
+    font-size:11px;
+    font-weight:bold;
+}
+
+.today{
+    background:#dcfce7;
+    color:#15803d;
+}
+
+.tomorrow{
+    background:#dbeafe;
+    color:#1d4ed8;
+}
+
+.completed{
+    background:#e0e7ff;
+    color:#4338ca;
+}
+
+/* CALENDAR */
+.calendar{
+    display:grid;
+    grid-template-columns:repeat(7,1fr);
+    gap:7px;
+}
+
+.day-name{
+    text-align:center;
+    color:#718096;
+    font-size:11px;
+    font-weight:bold;
+    padding:8px 0;
+}
+
+.day{
+    text-align:center;
+    padding:10px 5px;
+    border-radius:8px;
+    font-size:13px;
+}
+
+.day:hover{
+    background:#f1f5f9;
+}
+
+.selected{
+    background:#2563eb;
+    color:white;
+    font-weight:bold;
+}
+
+.has-event{
+    border:1px solid #93c5fd;
+    color:#2563eb;
+    font-weight:bold;
+}
+
+/* BUTTON */
+.new-btn{
+    border:none;
+    background:#2563eb;
+    color:white;
+    padding:11px 16px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+.new-btn:hover{
+    background:#1d4ed8;
+}
+
+/* MOBILE */
+@media(max-width:900px){
+
+    .sidebar{
+        width:70px;
+        padding:20px 10px;
+    }
+
+    .logo{
+        font-size:0;
+        text-align:center;
+    }
+
+    .logo span{
+        font-size:22px;
+    }
+
+    .nav a{
+        font-size:0;
+        text-align:center;
+    }
+
+    .nav a:first-letter{
+        font-size:20px;
+    }
+
+    .main{
+        margin-left:70px;
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:600px){
+
+    .main{
+        padding:18px;
+    }
+
+    .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    .topbar h1{
+        font-size:22px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .appointment{
+        align-items:flex-start;
+        gap:15px;
+    }
+
+    .time{
+        text-align:left;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">
+        SHIZAZ <span>AI</span>
+    </div>
+
+    <div class="nav">
+
+        <a href="index.html">
+            📊 Dashboard
+        </a>
+
+        <a href="ai.html">
+            🤖 AI Assistant
+        </a>
+
+        <a href="leads.html">
+            👥 Leads
+        </a>
+
+        <a href="followups.html">
+            🔄 Follow-ups
+        </a>
+
+        <a href="appointments.html" class="active">
+            📅 Appointments
+        </a>
+
+        <a href="analytics.html">
+            📈 Analytics
+        </a>
+
+        <a href="settings.html">
+            ⚙️ Settings
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- MAIN -->
+
+<div class="main">
+
+    <div class="topbar">
+
+        <div>
+
+            <h1>Appointments</h1>
+
+            <p class="subtitle">
+                Manage AI-booked insurance appointments
+            </p>
+
+        </div>
+
+        <button class="new-btn" onclick="newAppointment()">
+            + New Appointment
+        </button>
+
+    </div>
+
+
+    <!-- STATS -->
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <p>Today's Appointments</p>
+
+            <h2>18</h2>
+
+            <div class="green">
+                ↑ 3 from yesterday
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <p>This Week</p>
+
+            <h2>74</h2>
+
+            <div class="green">
+                ↑ 11.6% this week
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <p>AI Booked</p>
+
+            <h2>62</h2>
+
+            <div class="green">
+                83.8% of total
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <p>Show Rate</p>
+
+            <h2>91.4%</h2>
+
+            <div class="green">
+                ↑ 2.1% this month
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="grid">
+
+        <!-- APPOINTMENT LIST -->
+
+        <div class="panel">
+
+            <h2>Upcoming Appointments</h2>
+
+
+            <div class="appointment">
+
+                <div>
+
+                    <div class="person">
+                        John Anderson
+                    </div>
+
+                    <div class="details">
+                        Auto Insurance • AI Booked
+                    </div>
+
+                    <span class="badge today">
+                        Today
+                    </span>
+
+                </div>
+
+                <div class="time">
+
+                    <strong>
+                        3:30 PM
+                    </strong>
+
+                    <span class="details">
+                        30 minutes
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="appointment">
+
+                <div>
+
+                    <div class="person">
+                        Sarah Johnson
+                    </div>
+
+                    <div class="details">
+                        Home Insurance • AI Booked
+                    </div>
+
+                    <span class="badge today">
+                        Today
+                    </span>
+
+                </div>
+
+                <div class="time">
+
+                    <strong>
+                        4:15 PM
+                    </strong>
+
+                    <span class="details">
+                        30 minutes
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="appointment">
+
+                <div>
+
+                    <div class="person">
+                        Michael Brown
+                    </div>
+
+                    <div class="details">
+                        Life Insurance • Agent
+                    </div>
+
+                    <span class="badge tomorrow">
+                        Tomorrow
+                    </span>
+
+                </div>
+
+                <div class="time">
+
+                    <strong>
+                        10:00 AM
+                    </strong>
+
+                    <span class="details">
+                        45 minutes
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="appointment">
+
+                <div>
+
+                    <div class="person">
+                        Emily Davis
+                    </div>
+
+                    <div class="details">
+                        Health Insurance • AI Booked
+                    </div>
+
+                    <span class="badge tomorrow">
+                        Tomorrow
+                    </span>
+
+                </div>
+
+                <div class="time">
+
+                    <strong>
+                        1:30 PM
+                    </strong>
+
+                    <span class="details">
+                        30 minutes
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div class="appointment">
+
+                <div>
+
+                    <div class="person">
+                        Robert Wilson
+                    </div>
+
+                    <div class="details">
+                        Business Insurance • Agent
+                    </div>
+
+                    <span class="badge completed">
+                        Completed
+                    </span>
+
+                </div>
+
+                <div class="time">
+
+                    <strong>
+                        Yesterday
+                    </strong>
+
+                    <span class="details">
+                        11:00 AM
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- CALENDAR -->
+
+        <div class="panel">
+
+            <h2>September 2026</h2>
+
+            <div class="calendar">
+
+                <div class="day-name">Sun</div>
+                <div class="day-name">Mon</div>
+                <div class="day-name">Tue</div>
+                <div class="day-name">Wed</div>
+                <div class="day-name">Thu</div>
+                <div class="day-name">Fri</div>
+                <div class="day-name">Sat</div>
+
+
+                <div class="day"></div>
+                <div class="day"></div>
+                <div class="day">1</div>
+                <div class="day">2</div>
+                <div class="day">3</div>
+                <div class="day">4</div>
+                <div class="day">5</div>
+
+                <div class="day">6</div>
+                <div class="day">7</div>
+                <div class="day">8</div>
+                <div class="day">9</div>
+                <div class="day">10</div>
+                <div class="day">11</div>
+                <div class="day selected">12</div>
+
+                <div class="day has-event">13</div>
+                <div class="day">14</div>
+                <div class="day">15</div>
+                <div class="day">16</div>
+                <div class="day">17</div>
+                <div class="day">18</div>
+                <div class="day">19</div>
+
+                <div class="day">20</div>
+                <div class="day">21</div>
+                <div class="day">22</div>
+                <div class="day">23</div>
+                <div class="day">24</div>
+                <div class="day">25</div>
+                <div class="day">26</div>
+
+                <div class="day">27</div>
+                <div class="day">28</div>
+                <div class="day">29</div>
+                <div class="day">30</div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function newAppointment(){
+
+    alert(
+        "New Appointment\n\n" +
+        "Appointment creation form will open here."
+    );
+
+}
+
+</script>
+
+</body>
+</html>
