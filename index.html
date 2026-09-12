@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHIZAZ Insurance AI</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f4f7fb;
+    color:#172033;
+}
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:245px;
+    height:100vh;
+    background:#111827;
+    color:white;
+    padding:25px 18px;
+}
+
+.logo{
+    font-size:22px;
+    font-weight:bold;
+    margin-bottom:40px;
+}
+
+.logo span{
+    color:#38bdf8;
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.nav a{
+    text-decoration:none;
+    color:#aeb8c8;
+    padding:13px 15px;
+    border-radius:10px;
+    display:block;
+    transition:.2s;
+}
+
+.nav a:hover,
+.nav a.active{
+    background:#1e293b;
+    color:white;
+}
+
+.main{
+    margin-left:245px;
+    padding:30px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+}
+
+.topbar h1{
+    font-size:28px;
+}
+
+.admin{
+    background:white;
+    padding:10px 16px;
+    border-radius:10px;
+    box-shadow:0 3px 12px rgba(0,0,0,.06);
+}
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:18px;
+    margin-bottom:25px;
+}
+
+.card{
+    background:white;
+    padding:22px;
+    border-radius:15px;
+    box-shadow:0 3px 15px rgba(0,0,0,.06);
+}
+
+.card p{
+    color:#718096;
+    font-size:14px;
+    margin-bottom:10px;
+}
+
+.card h2{
+    font-size:28px;
+}
+
+.up{
+    color:#16a34a;
+    font-size:13px;
+    margin-top:8px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:2fr 1fr;
+    gap:20px;
+}
+
+.panel{
+    background:white;
+    border-radius:15px;
+    padding:22px;
+    box-shadow:0 3px 15px rgba(0,0,0,.06);
+}
+
+.panel h3{
+    margin-bottom:20px;
+}
+
+.chart{
+    height:220px;
+    display:flex;
+    align-items:end;
+    gap:12px;
+    padding:15px;
+    border-bottom:1px solid #ddd;
+}
+
+.bar{
+    flex:1;
+    background:#38bdf8;
+    border-radius:6px 6px 0 0;
+}
+
+.activity{
+    display:flex;
+    justify-content:space-between;
+    padding:13px 0;
+    border-bottom:1px solid #edf0f4;
+    font-size:14px;
+}
+
+.status{
+    color:#16a34a;
+    font-weight:bold;
+}
+
+.ai-box{
+    margin-top:20px;
+    background:#111827;
+    color:white;
+    padding:20px;
+    border-radius:15px;
+}
+
+.ai-box h3{
+    color:#38bdf8;
+}
+
+.ai-box p{
+    color:#cbd5e1;
+    line-height:1.6;
+}
+
+@media(max-width:900px){
+
+    .sidebar{
+        width:70px;
+        padding:20px 10px;
+    }
+
+    .logo{
+        font-size:0;
+        text-align:center;
+    }
+
+    .logo span{
+        font-size:22px;
+    }
+
+    .nav a{
+        font-size:0;
+        text-align:center;
+    }
+
+    .nav a:first-letter{
+        font-size:20px;
+    }
+
+    .main{
+        margin-left:70px;
+    }
+
+    .cards{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+}
+
+@media(max-width:600px){
+
+    .main{
+        padding:18px;
+    }
+
+    .topbar h1{
+        font-size:22px;
+    }
+
+    .cards{
+        grid-template-columns:1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+
+    <div class="logo">
+        SHIZAZ <span>AI</span>
+    </div>
+
+    <div class="nav">
+
+        <a href="index.html" class="active">
+            📊 Dashboard
+        </a>
+
+        <a href="ai.html">
+            🤖 AI Assistant
+        </a>
+
+        <a href="leads.html">
+            👥 Leads
+        </a>
+
+        <a href="followups.html">
+            🔄 Follow-ups
+        </a>
+
+        <a href="appointments.html">
+            📅 Appointments
+        </a>
+
+        <a href="analytics.html">
+            📈 Analytics
+        </a>
+
+        <a href="settings.html">
+            ⚙️ Settings
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- MAIN -->
+<div class="main">
+
+    <div class="topbar">
+
+        <div>
+            <h1>Insurance AI Dashboard</h1>
+
+            <p style="color:#718096;margin-top:6px;">
+                AI-powered insurance automation
+            </p>
+        </div>
+
+        <div class="admin">
+            👤 Admin
+        </div>
+
+    </div>
+
+
+    <!-- STAT CARDS -->
+    <div class="cards">
+
+        <div class="card">
+            <p>Total Leads</p>
+            <h2>1,284</h2>
+            <div class="up">↑ 18.4% this month</div>
+        </div>
+
+        <div class="card">
+            <p>AI Conversations</p>
+            <h2>3,842</h2>
+            <div class="up">↑ 24.7% this month</div>
+        </div>
+
+        <div class="card">
+            <p>Appointments</p>
+            <h2>286</h2>
+            <div class="up">↑ 12.5% this month</div>
+        </div>
+
+        <div class="card">
+            <p>Conversion Rate</p>
+            <h2>22.3%</h2>
+            <div class="up">↑ 4.8% this month</div>
+        </div>
+
+    </div>
+
+
+    <!-- CHART + AUTOMATION -->
+    <div class="grid">
+
+        <div class="panel">
+
+            <h3>Lead Generation</h3>
+
+            <div class="chart">
+
+                <div class="bar" style="height:35%;"></div>
+                <div class="bar" style="height:48%;"></div>
+                <div class="bar" style="height:42%;"></div>
+                <div class="bar" style="height:65%;"></div>
+                <div class="bar" style="height:58%;"></div>
+                <div class="bar" style="height:78%;"></div>
+                <div class="bar" style="height:92%;"></div>
+
+            </div>
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                margin-top:10px;
+                color:#718096;
+                font-size:13px;
+            ">
+
+                <span>Mon</span>
+                <span>Tue</span>
+                <span>Wed</span>
+                <span>Thu</span>
+                <span>Fri</span>
+                <span>Sat</span>
+                <span>Sun</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <h3>Automation Status</h3>
+
+            <div class="activity">
+                <span>AI Assistant</span>
+                <span class="status">Active</span>
+            </div>
+
+            <div class="activity">
+                <span>Lead Collection</span>
+                <span class="status">Active</span>
+            </div>
+
+            <div class="activity">
+                <span>Follow-ups</span>
+                <span class="status">Active</span>
+            </div>
+
+            <div class="activity">
+                <span>Appointments</span>
+                <span class="status">Active</span>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RECENT ACTIVITY -->
+    <div class="panel" style="margin-top:20px;">
+
+        <h3>Recent AI Activity</h3>
+
+        <div class="activity">
+            <span>AI collected a new Auto Insurance lead</span>
+            <span>2 min ago</span>
+        </div>
+
+        <div class="activity">
+            <span>Follow-up message sent to Sarah Johnson</span>
+            <span>8 min ago</span>
+        </div>
+
+        <div class="activity">
+            <span>Appointment booked with Michael Brown</span>
+            <span>15 min ago</span>
+        </div>
+
+        <div class="activity">
+            <span>AI answered customer insurance question</span>
+            <span>22 min ago</span>
+        </div>
+
+    </div>
+
+
+    <!-- AI BOX -->
+    <div class="ai-box">
+
+        <h3>🤖 SHIZAZ AI Assistant</h3>
+
+        <p style="margin-top:10px;">
+
+            Your AI assistant is currently handling customer inquiries,
+            collecting leads, answering insurance questions and managing
+            automated follow-ups.
+
+        </p>
+
+    </div>
+
+</div>
+
+</body>
+</html>
